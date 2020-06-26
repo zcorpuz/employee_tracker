@@ -1,3 +1,8 @@
+// Require Constructor Classes from Lib folder
+const Department = require("./lib/dept");
+const Role = require("./lib/role");
+const Employee = require("./lib/employee");
+// Require Dependencies for Application
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
@@ -13,6 +18,7 @@ connection.connect(err => {
     if (err) throw err;
 });
 
+// Inquirer question prompt for the beginning of application
 const startApp = {
     name: "action",
     type: "rawlist",
@@ -26,7 +32,7 @@ const startApp = {
     ]
 };
 
-
+// Add Department Inquirer Prompt
 const addDept = () => {
     inquirer
         .prompt({
@@ -45,6 +51,7 @@ const addDept = () => {
         // })
 };
 
+// Add Role Inquirer Prompt
 const addRole = () => {
     inquirer
         .prompt({
@@ -78,6 +85,7 @@ const addRole = () => {
         })
 };
 
+// Add Employee Inquirer Prompt
 const addEmployee = () => {
     inquirer
         .prompt({
