@@ -30,7 +30,8 @@ const startApp = () => {
                 "Add New Role",
                 "Add New Employee",
                 "View List of Employees",
-                "Update an Employee's Role"
+                "Update an Employee's Role",
+                "Finish"
             ]
         })
         .then(answers => {
@@ -53,6 +54,11 @@ const startApp = () => {
                 
                 case "Update an Employee's Role":
                     updateEmployee();
+                    break;
+
+                case "Finish":
+                    console.log('See you next time!');
+                    connection.end();
                     break;
             }
         })
