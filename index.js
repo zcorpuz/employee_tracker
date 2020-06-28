@@ -46,9 +46,6 @@ const addDept = () => {
                 return true;
             },
         })
-        // .then(answer => {
-        //     let query = "INSERT INTO department(id, name) VALUES("
-        // })
 };
 
 // Add Role Inquirer Prompt
@@ -118,4 +115,23 @@ const addEmployee = () => {
             },
         })
 };
+
+const init = async () => {
+    const startAnswer = await inquirer.prompt(startApp);
+    const { action } = startAnswer;
+
+    if(action === 'Add New Department') {
+        addDept();
+    } else if (action === 'Add New Role') {
+        addRole();
+    } else if (action === 'Add New Employee') {
+        addEmployee();
+    } else if (action === 'View List of Employees') {
+        //Add function so that user can view whole employee list. This would through console.table.
+    } else if (action === 'Update Employee') {
+        //Add function so that user can update employee
+    }
+};
+
+init();
 
