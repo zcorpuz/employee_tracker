@@ -52,7 +52,8 @@ const startApp = () => {
                     break;
                 
                 case "Update an Employee's Role":
-                
+                    updateEmployee();
+                    break;
             }
         })
 };
@@ -199,7 +200,7 @@ const addEmployee = () => {
 };
 
 const viewEmployees = () => {
-    connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id", (err, res) => {
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id", (err, res) => {
         if (err) throw err;
 
         console.table(res);
@@ -207,33 +208,45 @@ const viewEmployees = () => {
     })
 };
 
-// const deptList = [];
-// const employeeList = [];
-
-// const init = async () => {
-//     const startAnswer = await inquirer.prompt(startApp);
-//     const { action } = startAnswer;
-
-//     if(action === 'Add New Department') {
-//         const deptAnswer = await inquirer.prompt(addDept);
-
-//         const newDept = new Department (name);
-//         deptList.push(newDept);
-//     } else if (action === 'Add New Role') {
-//         const roleAnswer = await inquirer.prompt(addRole);
-
-//         const newRole = new Role (title, salary, deptId);
-//     } else if (action === 'Add New Employee') {
-//         const employeeAnswer = await inquirer.prompt(addEmployee);
-
-//         const newEmployee = new Employee (firstName, lastName, roleId, managerId);
-//         employeeList.push(newEmployee);
-//     } else if (action === 'View List of Employees') {
-//         //Add function so that user can view whole employee list. This would through console.table.
-//     } else if (action === 'Update Employee') {
-//         //Add function so that user can update employee
-//     }
-// };
-
-// init();
+const updateEmployee = () => {
+    inquirer
+        .prompt([
+           { 
+                name: "employeeId",
+                type: "input",
+                message: "What is the id number of the employee that you would like to change?",
+                validate: (answer) => {
+                    if (answer.length < 1) {
+                        return 'Please enter a valid id number';
+                    }
+                    return true;
+                },
+            },
+            { 
+                name: "newRoleId",
+                type: "input",
+                message: "What is the new role id number for the employee?",
+                validate: (answer) => {
+                    if (answer.length < 1) {
+                        return 'Please enter a valid id number';
+                    }
+                    return true;
+                },
+            },
+        ])
+        .then(response => {
+            let targetEmployee = response.employeeId;
+            let newRoleId = response.newRoleId;
+            connection.query(`UPDATE employee SET role_id = ${newRoleId} WHERE id = ${targetEmployee}`,
+            (err, res) => {
+                if (err) {
+                    console.log('Invalid ID Number. Please try again.');
+                    updateEmployee();
+                    return;
+                }
+                console.log(`Employee updated!`);
+                startApp();
+            });
+        });
+};
 
