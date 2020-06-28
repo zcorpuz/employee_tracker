@@ -124,6 +124,19 @@ const addRole = () => {
                 }
             }
         ])
+        .then(response => {
+            connection.query("INSERT INTO role SET ?",
+            {
+                title: response.title,
+                salary: parseInt(response.salary),
+                department_id: parseInt(response.deptId)
+            },
+            (err, res) => {
+                if (err) throw err;
+                console.log(`${response.title} added!`);
+                startApp();
+            });
+        });
 };
      
 
@@ -166,6 +179,23 @@ const addEmployee = () => {
                 },
             }
         ])
+        .then(response => {
+            connection.query("INSERT INTO employee SET ?",
+            {
+                first_name: response.firstName,
+                last_name: response.lastName,
+                role_id: parseInt(response.roleId)
+            },
+            (err, res) => {
+                if (err) {
+                    console.log('Invalid ID Number. Please try again.');
+                    addEmployee();
+                    return;
+                }
+                console.log(`${response.firstName} ${response.lastName} added!`);
+                startApp();
+            });
+        });
 };
 
 const viewEmployees = () => {
